@@ -8,4 +8,6 @@ li {
 
 #book{
   max-width: 800px;
+  right-align: auto;
+  left-align: auto;
 }
