@@ -5,3 +5,7 @@ li {
 .pageNumber{
   text-align: center;
 }
+
+#book{
+  max-width: 800px;
+}
