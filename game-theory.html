@@ -3,88 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Theory Skills Assessment</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <title>Game Theory Assessment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .dark {
+            color-scheme: dark;
+        }
         .transition-colors {
-            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
         .transition-all {
             transition: all 0.3s ease;
         }
+        .lucide-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+        .lucide-icon-lg {
+            width: 2rem;
+            height: 2rem;
+        }
     </style>
 </head>
-<body class="min-h-screen transition-colors bg-gray-50" id="body">
-    <img src="./images/wslogo.png" />
-    <h1>WizardSpire Games</h1>
+<body class="min-h-screen transition-colors bg-gray-50" id="app-body">
     <div class="max-w-2xl mx-auto p-6">
         <div class="rounded-lg shadow-lg transition-colors bg-white" id="main-container">
             <div class="p-6">
-                <!-- Assessment Content -->
-                <div class="mb-6" id="assessment-content">
+                <!-- Header -->
+                <div class="mb-6">
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-2xl font-bold text-gray-800" id="main-title">Game Theory Assessment</h1>
                         <div class="flex items-center gap-4">
-                            <div class="text-sm text-gray-600" id="level-indicator">
+                            <div class="text-sm text-gray-600" id="level-display">
                                 Level: <span class="font-semibold text-green-600" id="current-level">Introductory</span>
                             </div>
                             <button id="theme-toggle" class="p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">
-                                <i data-lucide="moon" class="w-5 h-5"></i>
+                                <svg class="lucide-icon" id="theme-icon" viewBox="0 0 24 24">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
                             </button>
                         </div>
                     </div>
-                    <div class="w-full rounded-full h-2 bg-gray-200" id="progress-bg">
-                        <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 33.33%"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2" id="progress-bg">
+                        <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" id="progress-bar" style="width: 33.33%"></div>
                     </div>
-                    <p class="text-sm mt-2 text-gray-600" id="question-counter">Question 1 of 3</p>
+                    <p class="text-sm text-gray-600 mt-2" id="question-counter">Question 1 of 3</p>
                 </div>
 
+                <!-- Question Section -->
                 <div class="mb-6" id="question-section">
-                    <h2 class="text-xl font-semibold mb-4 text-gray-800" id="question-text">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4" id="question-text">
                         What is a dominant strategy in game theory?
                     </h2>
                     <div class="space-y-3" id="options-container">
-                        <!-- Options will be dynamically generated -->
+                        <!-- Options will be populated by JavaScript -->
                     </div>
                 </div>
 
-                <div class="mb-6 p-4 rounded-lg border bg-blue-50 border-blue-200 hidden" id="feedback-section">
-                    <p class="text-sm text-blue-800" id="feedback-text"></p>
+                <!-- Feedback Section -->
+                <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg hidden" id="feedback-section">
+                    <p class="text-blue-800 text-sm" id="feedback-text"></p>
                 </div>
 
-                <div class="text-center hidden" id="next-button-container">
-                    <button id="next-button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <!-- Next Button -->
+                <div class="text-center hidden" id="next-section">
+                    <button id="next-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                         Next Question
                     </button>
                 </div>
-            </div>
-        </div>
 
-        <!-- Results Screen (Hidden by default) -->
-        <div class="rounded-lg shadow-lg transition-colors bg-white hidden" id="results-container">
-            <div class="p-6">
-                <div class="flex justify-end mb-4">
-                    <button id="theme-toggle-results" class="p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">
-                        <i data-lucide="moon" class="w-5 h-5"></i>
-                    </button>
-                </div>
-                <div class="text-center">
-                    <div class="flex justify-center mb-4" id="results-icon">
-                        <i data-lucide="brain" class="w-8 h-8 text-green-500"></i>
+                <!-- Results Section -->
+                <div class="text-center hidden" id="results-section">
+                    <div class="flex justify-center mb-4" id="result-icon">
+                        <!-- Icon will be populated by JavaScript -->
                     </div>
-                    <h2 class="text-2xl font-bold mb-2 text-gray-800" id="results-title">Foundational Knowledge</h2>
-                    <p class="mb-4 text-gray-600" id="results-description">Basic understanding established. Focus on strengthening core concepts.</p>
-                    <div class="rounded-lg p-4 mb-6 bg-gray-50" id="results-stats">
-                        <p class="text-sm text-gray-600">
-                            Highest Level Reached: <span class="font-semibold text-green-600" id="final-level">Introductory</span>
-                        </p>
-                        <p class="text-sm text-gray-600">
-                            Total Questions Answered: <span id="total-questions">0</span>
-                        </p>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2" id="result-title"></h2>
+                    <p class="text-gray-600 mb-4" id="result-description"></p>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6" id="result-stats">
+                        <p class="text-sm text-gray-600" id="highest-level"></p>
+                        <p class="text-sm text-gray-600" id="total-questions"></p>
                     </div>
-                    <button id="restart-button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    <button id="restart-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto">
+                        <svg class="lucide-icon" viewBox="0 0 24 24">
+                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                            <path d="M21 3v5h-5"></path>
+                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                            <path d="M3 21v-5h5"></path>
+                        </svg>
                         Take Assessment Again
                     </button>
                 </div>
@@ -93,16 +101,18 @@
     </div>
 
     <script>
-        // Game state
-        let currentQuestion = 0;
-        let score = 0;
-        let level = 'introductory';
-        let answers = [];
-        let showResult = false;
-        let assessmentComplete = false;
-        let selectedAnswer = null;
-        let showFeedback = false;
-        let darkMode = false;
+        // Assessment state
+        let state = {
+            currentQuestion: 0,
+            score: 0,
+            level: 'introductory',
+            answers: [],
+            showResult: false,
+            assessmentComplete: false,
+            selectedAnswer: null,
+            showFeedback: false,
+            darkMode: false
+        };
 
         // Questions data
         const questions = {
@@ -228,89 +238,38 @@
             advanced: 2
         };
 
-        // Initialize Lucide icons
-        function initializeIcons() {
-            lucide.createIcons();
-        }
+        // DOM elements
+        const elements = {
+            body: document.getElementById('app-body'),
+            container: document.getElementById('main-container'),
+            title: document.getElementById('main-title'),
+            levelDisplay: document.getElementById('level-display'),
+            currentLevel: document.getElementById('current-level'),
+            themeToggle: document.getElementById('theme-toggle'),
+            themeIcon: document.getElementById('theme-icon'),
+            progressBg: document.getElementById('progress-bg'),
+            progressBar: document.getElementById('progress-bar'),
+            questionCounter: document.getElementById('question-counter'),
+            questionSection: document.getElementById('question-section'),
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            feedbackSection: document.getElementById('feedback-section'),
+            feedbackText: document.getElementById('feedback-text'),
+            nextSection: document.getElementById('next-section'),
+            nextBtn: document.getElementById('next-btn'),
+            resultsSection: document.getElementById('results-section'),
+            resultIcon: document.getElementById('result-icon'),
+            resultTitle: document.getElementById('result-title'),
+            resultDescription: document.getElementById('result-description'),
+            resultStats: document.getElementById('result-stats'),
+            highestLevel: document.getElementById('highest-level'),
+            totalQuestions: document.getElementById('total-questions'),
+            restartBtn: document.getElementById('restart-btn')
+        };
 
-        // Theme management
-        function toggleDarkMode() {
-            darkMode = !darkMode;
-            updateTheme();
-        }
-
-        function updateTheme() {
-            const body = document.getElementById('body');
-            const mainContainer = document.getElementById('main-container');
-            const resultsContainer = document.getElementById('results-container');
-            const mainTitle = document.getElementById('main-title');
-            const levelIndicator = document.getElementById('level-indicator');
-            const questionCounter = document.getElementById('question-counter');
-            const questionText = document.getElementById('question-text');
-            const progressBg = document.getElementById('progress-bg');
-            const feedbackSection = document.getElementById('feedback-section');
-            const feedbackText = document.getElementById('feedback-text');
-            const resultsTitle = document.getElementById('results-title');
-            const resultsDescription = document.getElementById('results-description');
-            const resultsStats = document.getElementById('results-stats');
-            
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeToggleResults = document.getElementById('theme-toggle-results');
-
-            if (darkMode) {
-                // Dark theme
-                body.className = 'min-h-screen transition-colors bg-gray-900';
-                mainContainer.className = 'rounded-lg shadow-lg transition-colors bg-gray-800';
-                resultsContainer.className = 'rounded-lg shadow-lg transition-colors bg-gray-800';
-                mainTitle.className = 'text-2xl font-bold text-white';
-                levelIndicator.className = 'text-sm text-gray-300';
-                questionCounter.className = 'text-sm mt-2 text-gray-400';
-                questionText.className = 'text-xl font-semibold mb-4 text-white';
-                progressBg.className = 'w-full rounded-full h-2 bg-gray-700';
-                feedbackSection.className = 'mb-6 p-4 rounded-lg border bg-blue-900 border-blue-700';
-                feedbackText.className = 'text-sm text-blue-300';
-                resultsTitle.className = 'text-2xl font-bold mb-2 text-white';
-                resultsDescription.className = 'mb-4 text-gray-300';
-                resultsStats.className = 'rounded-lg p-4 mb-6 bg-gray-700';
-                
-                themeToggle.className = 'p-2 rounded-lg transition-colors bg-gray-700 text-yellow-400 hover:bg-gray-600';
-                themeToggleResults.className = 'p-2 rounded-lg transition-colors bg-gray-700 text-yellow-400 hover:bg-gray-600';
-                themeToggle.innerHTML = '<i data-lucide="sun" class="w-5 h-5"></i>';
-                themeToggleResults.innerHTML = '<i data-lucide="sun" class="w-5 h-5"></i>';
-            } else {
-                // Light theme
-                body.className = 'min-h-screen transition-colors bg-gray-50';
-                mainContainer.className = 'rounded-lg shadow-lg transition-colors bg-white';
-                resultsContainer.className = 'rounded-lg shadow-lg transition-colors bg-white';
-                mainTitle.className = 'text-2xl font-bold text-gray-800';
-                levelIndicator.className = 'text-sm text-gray-600';
-                questionCounter.className = 'text-sm mt-2 text-gray-600';
-                questionText.className = 'text-xl font-semibold mb-4 text-gray-800';
-                progressBg.className = 'w-full rounded-full h-2 bg-gray-200';
-                feedbackSection.className = 'mb-6 p-4 rounded-lg border bg-blue-50 border-blue-200';
-                feedbackText.className = 'text-sm text-blue-800';
-                resultsTitle.className = 'text-2xl font-bold mb-2 text-gray-800';
-                resultsDescription.className = 'mb-4 text-gray-600';
-                resultsStats.className = 'rounded-lg p-4 mb-6 bg-gray-50';
-                
-                themeToggle.className = 'p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
-                themeToggleResults.className = 'p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
-                themeToggle.innerHTML = '<i data-lucide="moon" class="w-5 h-5"></i>';
-                themeToggleResults.innerHTML = '<i data-lucide="moon" class="w-5 h-5"></i>';
-            }
-            
-            // Update stats text colors in dark mode
-            const statsTexts = resultsStats.querySelectorAll('p');
-            statsTexts.forEach(p => {
-                p.className = darkMode ? 'text-sm text-gray-300' : 'text-sm text-gray-600';
-            });
-            
-            initializeIcons();
-        }
-
-        // Level color management
-        function getLevelColor(levelName) {
-            switch(levelName) {
+        // Utility functions
+        function getLevelColor(level) {
+            switch(level) {
                 case 'introductory': return 'text-green-600';
                 case 'intermediate': return 'text-yellow-600';
                 case 'advanced': return 'text-red-600';
@@ -318,125 +277,173 @@
             }
         }
 
-        // Question management
+        function updateTheme() {
+            if (state.darkMode) {
+                elements.body.className = 'min-h-screen transition-colors bg-gray-900';
+                elements.container.className = 'rounded-lg shadow-lg transition-colors bg-gray-800';
+                elements.title.className = 'text-2xl font-bold text-white';
+                elements.levelDisplay.className = 'text-sm text-gray-300';
+                elements.themeToggle.className = 'p-2 rounded-lg transition-colors bg-gray-700 text-yellow-400 hover:bg-gray-600';
+                elements.progressBg.className = 'w-full bg-gray-700 rounded-full h-2';
+                elements.questionCounter.className = 'text-sm text-gray-400 mt-2';
+                elements.questionText.className = 'text-xl font-semibold text-white mb-4';
+                
+                // Update theme icon to sun
+                elements.themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><path d="m12 1 0 2"></path><path d="m12 21 0 2"></path><path d="M4.22 4.22l1.42 1.42"></path><path d="m18.36 18.36 1.42 1.42"></path><path d="M1 12h2"></path><path d="M21 12h2"></path><path d="m4.22 19.78 1.42-1.42"></path><path d="m18.36 5.64 1.42-1.42"></path>';
+            } else {
+                elements.body.className = 'min-h-screen transition-colors bg-gray-50';
+                elements.container.className = 'rounded-lg shadow-lg transition-colors bg-white';
+                elements.title.className = 'text-2xl font-bold text-gray-800';
+                elements.levelDisplay.className = 'text-sm text-gray-600';
+                elements.themeToggle.className = 'p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
+                elements.progressBg.className = 'w-full bg-gray-200 rounded-full h-2';
+                elements.questionCounter.className = 'text-sm text-gray-600 mt-2';
+                elements.questionText.className = 'text-xl font-semibold text-gray-800 mb-4';
+                
+                // Update theme icon to moon
+                elements.themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            }
+            
+            // Update feedback section theme
+            if (state.showFeedback) {
+                updateFeedbackTheme();
+            }
+        }
+
+        function updateFeedbackTheme() {
+            if (state.darkMode) {
+                elements.feedbackSection.className = 'mb-6 p-4 rounded-lg border bg-blue-900 border-blue-700';
+                elements.feedbackText.className = 'text-sm text-blue-300';
+            } else {
+                elements.feedbackSection.className = 'mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg';
+                elements.feedbackText.className = 'text-blue-800 text-sm';
+            }
+        }
+
+        function getCurrentQuestions() {
+            return questions[state.level];
+        }
+
+        function getCurrentQuestion() {
+            return getCurrentQuestions()[state.currentQuestion];
+        }
+
         function renderQuestion() {
-            const currentQuestions = questions[level];
-            const currentQ = currentQuestions[currentQuestion];
+            const currentQ = getCurrentQuestion();
+            const currentQuestions = getCurrentQuestions();
             
-            document.getElementById('question-text').textContent = currentQ.question;
-            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1} of ${currentQuestions.length}`;
-            document.getElementById('current-level').textContent = level.charAt(0).toUpperCase() + level.slice(1);
-            document.getElementById('current-level').className = `font-semibold ${getLevelColor(level)}`;
+            elements.questionText.textContent = currentQ.question;
+            elements.questionCounter.textContent = `Question ${state.currentQuestion + 1} of ${currentQuestions.length}`;
+            elements.progressBar.style.width = `${((state.currentQuestion + 1) / currentQuestions.length) * 100}%`;
             
-            // Update progress bar
-            const progress = ((currentQuestion + 1) / currentQuestions.length) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
+            // Update level display
+            elements.currentLevel.textContent = state.level.charAt(0).toUpperCase() + state.level.slice(1);
+            elements.currentLevel.className = `font-semibold ${getLevelColor(state.level)}`;
             
             // Render options
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-            
+            elements.optionsContainer.innerHTML = '';
             currentQ.options.forEach((option, index) => {
                 const button = document.createElement('button');
-                button.className = getOptionButtonClass(index, false, false);
-                button.innerHTML = `
-                    <div class="flex items-center">
-                        <span class="option-icon mr-3" style="display: none;"></span>
-                        ${option}
-                    </div>
-                `;
-                button.addEventListener('click', () => handleAnswer(index));
-                optionsContainer.appendChild(button);
+                button.className = getOptionButtonClass(index, false);
+                button.onclick = () => handleAnswer(index);
+                
+                const div = document.createElement('div');
+                div.className = 'flex items-center';
+                div.textContent = option;
+                
+                button.appendChild(div);
+                elements.optionsContainer.appendChild(button);
             });
         }
 
-        function getOptionButtonClass(index, isShowingFeedback, isSelected) {
-            const currentQuestions = questions[level];
-            const currentQ = currentQuestions[currentQuestion];
+        function getOptionButtonClass(index, showFeedback) {
+            const currentQ = getCurrentQuestion();
+            const baseClasses = 'w-full p-3 text-left rounded-lg border transition-colors ';
             
-            if (isShowingFeedback) {
+            if (showFeedback) {
                 if (index === currentQ.correct) {
-                    return darkMode 
-                        ? 'w-full p-3 text-left rounded-lg border transition-colors bg-green-900 border-green-600 text-green-300'
-                        : 'w-full p-3 text-left rounded-lg border transition-colors bg-green-100 border-green-500 text-green-800';
-                } else if (isSelected) {
-                    return darkMode
-                        ? 'w-full p-3 text-left rounded-lg border transition-colors bg-red-900 border-red-600 text-red-300'
-                        : 'w-full p-3 text-left rounded-lg border transition-colors bg-red-100 border-red-500 text-red-800';
+                    return baseClasses + (state.darkMode 
+                        ? 'bg-green-900 border-green-600 text-green-300'
+                        : 'bg-green-100 border-green-500 text-green-800');
+                } else if (index === state.selectedAnswer) {
+                    return baseClasses + (state.darkMode
+                        ? 'bg-red-900 border-red-600 text-red-300'
+                        : 'bg-red-100 border-red-500 text-red-800');
                 } else {
-                    return darkMode
-                        ? 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-700 border-gray-600 text-gray-400'
-                        : 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-50 border-gray-300 text-gray-600';
+                    return baseClasses + (state.darkMode
+                        ? 'bg-gray-700 border-gray-600 text-gray-400'
+                        : 'bg-gray-50 border-gray-300 text-gray-600');
                 }
             } else {
-                return darkMode
-                    ? 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600 hover:border-blue-500'
-                    : 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-50 border-gray-300 hover:bg-blue-50 hover:border-blue-300';
+                return baseClasses + (state.darkMode
+                    ? 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600 hover:border-blue-500'
+                    : 'bg-gray-50 border-gray-300 hover:bg-blue-50 hover:border-blue-300');
             }
         }
 
         function handleAnswer(answerIndex) {
-            if (showFeedback) return;
+            if (state.showFeedback) return;
             
-            const currentQuestions = questions[level];
-            const currentQ = currentQuestions[currentQuestion];
-            selectedAnswer = answerIndex;
+            const currentQ = getCurrentQuestion();
+            state.selectedAnswer = answerIndex;
             const isCorrect = answerIndex === currentQ.correct;
             
             if (isCorrect) {
-                score++;
+                state.score++;
             }
             
-            // Update button styles and show feedback
-            const buttons = document.querySelectorAll('#options-container button');
-            buttons.forEach((button, index) => {
-                button.className = getOptionButtonClass(index, true, index === selectedAnswer);
-                button.disabled = true;
-                
-                // Add icons
-                const iconSpan = button.querySelector('.option-icon');
-                iconSpan.style.display = 'block';
-                if (index === currentQ.correct) {
-                    iconSpan.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>';
-                } else if (index === selectedAnswer) {
-                    iconSpan.innerHTML = '<i data-lucide="x-circle" class="w-5 h-5 text-red-600"></i>';
-                }
-            });
+            state.showFeedback = true;
             
-            // Show feedback
-            document.getElementById('feedback-text').textContent = currentQ.explanation;
-            document.getElementById('feedback-section').classList.remove('hidden');
-            document.getElementById('next-button-container').classList.remove('hidden');
-            
-            // Update next button text
-            const nextButton = document.getElementById('next-button');
-            nextButton.textContent = currentQuestion < currentQuestions.length - 1 ? 'Next Question' : 'Continue';
-            
-            showFeedback = true;
-            
-            // Record answer
-            answers.push({
+            const newAnswer = {
                 questionId: currentQ.id,
                 selected: answerIndex,
                 correct: isCorrect,
-                level: level
-            });
+                level: state.level
+            };
+            state.answers.push(newAnswer);
             
-            initializeIcons();
+            // Update option buttons with feedback
+            const buttons = elements.optionsContainer.children;
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].className = getOptionButtonClass(i, true);
+                buttons[i].onclick = null;
+                
+                // Add icons for correct/incorrect
+                const div = buttons[i].querySelector('div');
+                if (i === currentQ.correct) {
+                    const icon = document.createElement('div');
+                    icon.className = 'mr-3';
+                    icon.innerHTML = '<svg class="lucide-icon text-green-600" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22,4 12,14.01 9,11.01"></polyline></svg>';
+                    div.insertBefore(icon, div.firstChild);
+                } else if (i === state.selectedAnswer && i !== currentQ.correct) {
+                    const icon = document.createElement('div');
+                    icon.className = 'mr-3';
+                    icon.innerHTML = '<svg class="lucide-icon text-red-600" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>';
+                    div.insertBefore(icon, div.firstChild);
+                }
+            }
+            
+            // Show feedback
+            elements.feedbackText.textContent = currentQ.explanation;
+            elements.feedbackSection.classList.remove('hidden');
+            updateFeedbackTheme();
+            
+            // Show next button
+            elements.nextSection.classList.remove('hidden');
+            const currentQuestions = getCurrentQuestions();
+            elements.nextBtn.textContent = state.currentQuestion < currentQuestions.length - 1 ? 'Next Question' : 'Continue';
         }
 
         function handleNext() {
-            showFeedback = false;
-            selectedAnswer = null;
+            state.showFeedback = false;
+            state.selectedAnswer = null;
             
-            // Hide feedback
-            document.getElementById('feedback-section').classList.add('hidden');
-            document.getElementById('next-button-container').classList.add('hidden');
+            elements.feedbackSection.classList.add('hidden');
+            elements.nextSection.classList.add('hidden');
             
-            const currentQuestions = questions[level];
-            
-            if (currentQuestion < currentQuestions.length - 1) {
-                currentQuestion++;
+            const currentQuestions = getCurrentQuestions();
+            if (state.currentQuestion < currentQuestions.length - 1) {
+                state.currentQuestion++;
                 renderQuestion();
             } else {
                 evaluateLevel();
@@ -444,85 +451,109 @@
         }
 
         function evaluateLevel() {
-            const levelScore = answers.filter(a => a.level === level && a.correct).length;
+            const levelScore = state.answers.filter(a => a.level === state.level && a.correct).length;
             
-            if (level === 'introductory' && levelScore >= levelThresholds.introductory) {
-                level = 'intermediate';
-                currentQuestion = 0;
+            if (state.level === 'introductory' && levelScore >= levelThresholds.introductory) {
+                state.level = 'intermediate';
+                state.currentQuestion = 0;
                 renderQuestion();
-            } else if (level === 'intermediate' && levelScore >= levelThresholds.intermediate) {
-                level = 'advanced';
-                currentQuestion = 0;
+            } else if (state.level === 'intermediate' && levelScore >= levelThresholds.intermediate) {
+                state.level = 'advanced';
+                state.currentQuestion = 0;
                 renderQuestion();
             } else {
+                state.assessmentComplete = true;
                 showResults();
             }
         }
 
         function showResults() {
-            document.getElementById('main-container').classList.add('hidden');
-            document.getElementById('results-container').classList.remove('hidden');
+            elements.questionSection.classList.add('hidden');
+            elements.resultsSection.classList.remove('hidden');
             
             const assessment = getFinalAssessment();
-            document.getElementById('results-icon').innerHTML = assessment.icon;
-            document.getElementById('results-title').textContent = assessment.title;
-            document.getElementById('results-description').textContent = assessment.description;
-            document.getElementById('final-level').textContent = level.charAt(0).toUpperCase() + level.slice(1);
-            document.getElementById('final-level').className = `font-semibold ${getLevelColor(level)}`;
-            document.getElementById('total-questions').textContent = answers.length;
             
-            updateTheme();
+            // Set result icon
+            elements.resultIcon.innerHTML = assessment.icon;
+            elements.resultTitle.textContent = assessment.title;
+            elements.resultDescription.textContent = assessment.description;
+            
+            // Update stats
+            elements.highestLevel.innerHTML = `Highest Level Reached: <span class="font-semibold ${getLevelColor(state.level)}">${state.level.charAt(0).toUpperCase() + state.level.slice(1)}</span>`;
+            elements.totalQuestions.textContent = `Total Questions Answered: ${state.answers.length}`;
+            
+            // Update result stats theme
+            if (state.darkMode) {
+                elements.resultTitle.className = 'text-2xl font-bold text-white mb-2';
+                elements.resultDescription.className = 'text-gray-300 mb-4';
+                elements.resultStats.className = 'bg-gray-700 rounded-lg p-4 mb-6';
+                elements.highestLevel.className = 'text-sm text-gray-300';
+                elements.totalQuestions.className = 'text-sm text-gray-300';
+            } else {
+                elements.resultTitle.className = 'text-2xl font-bold text-gray-800 mb-2';
+                elements.resultDescription.className = 'text-gray-600 mb-4';
+                elements.resultStats.className = 'bg-gray-50 rounded-lg p-4 mb-6';
+                elements.highestLevel.className = 'text-sm text-gray-600';
+                elements.totalQuestions.className = 'text-sm text-gray-600';
+            }
         }
 
         function getFinalAssessment() {
-            if (level === 'advanced') {
+            if (state.level === 'advanced') {
                 return {
                     title: "Advanced Game Theorist",
                     description: "Excellent mastery of game theory concepts from basic to advanced topics.",
-                    icon: '<i data-lucide="trophy" class="w-8 h-8 text-yellow-500"></i>'
+                    icon: '<svg class="lucide-icon-lg text-yellow-500" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M14 9h1.5a2.5 2.5 0 0 0 0-5H14"></path><path d="M6 9v5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9"></path><path d="M6 9h12"></path><polyline points="9,15 9,17 12,20 15,17 15,15"></polyline></svg>'
                 };
-            } else if (level === 'intermediate') {
+            } else if (state.level === 'intermediate') {
                 return {
                     title: "Intermediate Understanding",
                     description: "Good grasp of fundamental concepts. Ready to tackle more advanced topics.",
-                    icon: '<i data-lucide="target" class="w-8 h-8 text-blue-500"></i>'
+                    icon: '<svg class="lucide-icon-lg text-blue-500" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>'
                 };
             } else {
                 return {
                     title: "Foundational Knowledge",
                     description: "Basic understanding established. Focus on strengthening core concepts.",
-                    icon: '<i data-lucide="brain" class="w-8 h-8 text-green-500"></i>'
+                    icon: '<svg class="lucide-icon-lg text-green-500" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5V9a1 1 0 0 1-1 1H6.5A2.5 2.5 0 0 1 4 7.5V4.5A2.5 2.5 0 0 1 6.5 2z"></path><path d="M14 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z"></path><path d="M6 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"></path></svg>'
                 };
             }
         }
 
         function resetAssessment() {
-            currentQuestion = 0;
-            score = 0;
-            level = 'introductory';
-            answers = [];
-            showResult = false;
-            assessmentComplete = false;
-            selectedAnswer = null;
-            showFeedback = false;
+            state = {
+                currentQuestion: 0,
+                score: 0,
+                level: 'introductory',
+                answers: [],
+                showResult: false,
+                assessmentComplete: false,
+                selectedAnswer: null,
+                showFeedback: false,
+                darkMode: state.darkMode // Preserve theme preference
+            };
             
-            document.getElementById('results-container').classList.add('hidden');
-            document.getElementById('main-container').classList.remove('hidden');
+            elements.questionSection.classList.remove('hidden');
+            elements.resultsSection.classList.add('hidden');
+            elements.feedbackSection.classList.add('hidden');
+            elements.nextSection.classList.add('hidden');
             
             renderQuestion();
+        }
+
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
             updateTheme();
         }
 
         // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeIcons();
-            renderQuestion();
-            
-            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
-            document.getElementById('theme-toggle-results').addEventListener('click', toggleDarkMode);
-            document.getElementById('next-button').addEventListener('click', handleNext);
-            document.getElementById('restart-button').addEventListener('click', resetAssessment);
-        });
+        elements.themeToggle.addEventListener('click', toggleDarkMode);
+        elements.nextBtn.addEventListener('click', handleNext);
+        elements.restartBtn.addEventListener('click', resetAssessment);
+
+        // Initialize
+        renderQuestion();
+        updateTheme();
     </script>
 </body>
 </html>
