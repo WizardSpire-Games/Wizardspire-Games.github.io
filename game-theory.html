@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Theory Skills Assessment</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .transition-colors {
+            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen transition-colors bg-gray-50" id="body">
+    <img src="./images/wslogo.png" />
+    <h1>WizardSpire Games</h1>
+    <div class="max-w-2xl mx-auto p-6">
+        <div class="rounded-lg shadow-lg transition-colors bg-white" id="main-container">
+            <div class="p-6">
+                <!-- Assessment Content -->
+                <div class="mb-6" id="assessment-content">
+                    <div class="flex justify-between items-center mb-4">
+                        <h1 class="text-2xl font-bold text-gray-800" id="main-title">Game Theory Assessment</h1>
+                        <div class="flex items-center gap-4">
+                            <div class="text-sm text-gray-600" id="level-indicator">
+                                Level: <span class="font-semibold text-green-600" id="current-level">Introductory</span>
+                            </div>
+                            <button id="theme-toggle" class="p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">
+                                <i data-lucide="moon" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-full rounded-full h-2 bg-gray-200" id="progress-bg">
+                        <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 33.33%"></div>
+                    </div>
+                    <p class="text-sm mt-2 text-gray-600" id="question-counter">Question 1 of 3</p>
+                </div>
+
+                <div class="mb-6" id="question-section">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800" id="question-text">
+                        What is a dominant strategy in game theory?
+                    </h2>
+                    <div class="space-y-3" id="options-container">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+                </div>
+
+                <div class="mb-6 p-4 rounded-lg border bg-blue-50 border-blue-200 hidden" id="feedback-section">
+                    <p class="text-sm text-blue-800" id="feedback-text"></p>
+                </div>
+
+                <div class="text-center hidden" id="next-button-container">
+                    <button id="next-button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen (Hidden by default) -->
+        <div class="rounded-lg shadow-lg transition-colors bg-white hidden" id="results-container">
+            <div class="p-6">
+                <div class="flex justify-end mb-4">
+                    <button id="theme-toggle-results" class="p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">
+                        <i data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="text-center">
+                    <div class="flex justify-center mb-4" id="results-icon">
+                        <i data-lucide="brain" class="w-8 h-8 text-green-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800" id="results-title">Foundational Knowledge</h2>
+                    <p class="mb-4 text-gray-600" id="results-description">Basic understanding established. Focus on strengthening core concepts.</p>
+                    <div class="rounded-lg p-4 mb-6 bg-gray-50" id="results-stats">
+                        <p class="text-sm text-gray-600">
+                            Highest Level Reached: <span class="font-semibold text-green-600" id="final-level">Introductory</span>
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            Total Questions Answered: <span id="total-questions">0</span>
+                        </p>
+                    </div>
+                    <button id="restart-button" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        Take Assessment Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let currentQuestion = 0;
+        let score = 0;
+        let level = 'introductory';
+        let answers = [];
+        let showResult = false;
+        let assessmentComplete = false;
+        let selectedAnswer = null;
+        let showFeedback = false;
+        let darkMode = false;
+
+        // Questions data
+        const questions = {
+            introductory: [
+                {
+                    id: 1,
+                    question: "What is a dominant strategy in game theory?",
+                    options: [
+                        "A strategy that always guarantees victory regardless of circumstances",
+                        "A strategy that is optimal regardless of what others do",
+                        "A strategy chosen by the majority of players in the game",
+                        "A strategy that maximizes joint payoffs"
+                    ],
+                    correct: 1,
+                    explanation: "A dominant strategy is optimal for a player regardless of what strategies other players choose."
+                },
+                {
+                    id: 2,
+                    question: "In the Prisoner's Dilemma, what happens when both players choose their dominant strategy?",
+                    options: [
+                        "They achieve the globally optimal outcome for both parties",
+                        "They achieve a Nash equilibrium but not the best joint outcome",
+                        "One player wins decisively while the other loses completely",
+                        "The game reaches an indeterminate state with no clear solution"
+                    ],
+                    correct: 1,
+                    explanation: "Both defecting creates a Nash equilibrium, but mutual cooperation would be better for both."
+                },
+                {
+                    id: 3,
+                    question: "A Nash equilibrium is a situation where:",
+                    options: [
+                        "All players maximize their collective payoffs through perfect coordination",
+                        "No player can improve by unilaterally changing strategy",
+                        "One player completely dominates all other players in the game",
+                        "Players achieve perfect cooperation through binding agreements"
+                    ],
+                    correct: 1,
+                    explanation: "In Nash equilibrium, no player has incentive to deviate given others' strategies."
+                }
+            ],
+            intermediate: [
+                {
+                    id: 4,
+                    question: "What is the key insight of backward induction in sequential games?",
+                    options: [
+                        "Players should always choose cooperative strategies when possible",
+                        "Analyze the game from the final decision points backward",
+                        "The first-moving player maintains a decisive strategic advantage",
+                        "Random mixed strategies produce optimal outcomes in dynamic settings"
+                    ],
+                    correct: 1,
+                    explanation: "Backward induction starts from the end of the game tree and works backward to find optimal strategies."
+                },
+                {
+                    id: 5,
+                    question: "In repeated games, cooperation can be sustained through:",
+                    options: [
+                        "Legally binding contracts enforced by external authorities",
+                        "Threat of future punishment (like Tit-for-Tat)",
+                        "Government regulation and oversight of player behavior",
+                        "Random chance and unpredictable environmental factors"
+                    ],
+                    correct: 1,
+                    explanation: "The 'shadow of the future' allows punishment strategies to sustain cooperation."
+                },
+                {
+                    id: 6,
+                    question: "What distinguishes a subgame perfect equilibrium from a Nash equilibrium?",
+                    options: [
+                        "It applies exclusively to simultaneous-move games with perfect information",
+                        "It requires credible threats at every decision point",
+                        "It maximizes total social welfare across all players",
+                        "It systematically eliminates all weakly dominated strategies"
+                    ],
+                    correct: 1,
+                    explanation: "Subgame perfect equilibrium requires strategies to be optimal in every subgame, eliminating non-credible threats."
+                }
+            ],
+            advanced: [
+                {
+                    id: 7,
+                    question: "In mechanism design, the Revelation Principle states that:",
+                    options: [
+                        "All private information must be made publicly available to all participants",
+                        "Any outcome from a mechanism can be achieved by a truthful direct mechanism",
+                        "Players will always misrepresent their private types to gain advantage",
+                        "Only sealed-bid auction mechanisms can achieve efficient resource allocation"
+                    ],
+                    correct: 1,
+                    explanation: "The Revelation Principle shows we can focus on direct mechanisms where truth-telling is optimal."
+                },
+                {
+                    id: 8,
+                    question: "What is the key difference between evolutionary stable strategies and Nash equilibria?",
+                    options: [
+                        "ESS requires perfect rationality and complete information among all players",
+                        "ESS must be stable against small mutations in the population",
+                        "ESS applies exclusively to infinite-horizon games with continuous strategy spaces",
+                        "ESS requires complete information sharing and perfect communication protocols"
+                    ],
+                    correct: 1,
+                    explanation: "ESS adds stability requirements against small perturbations, making it more robust than Nash equilibrium."
+                },
+                {
+                    id: 9,
+                    question: "In incomplete information games, a Perfect Bayesian Equilibrium requires:",
+                    options: [
+                        "All players possess complete knowledge of every other player's payoff structure",
+                        "Strategies optimal given beliefs, and beliefs consistent with Bayes' rule",
+                        "Players employ purely random mixed strategies without any systematic patterns",
+                        "Complete prohibition of communication and signaling between all game participants"
+                    ],
+                    correct: 1,
+                    explanation: "PBE combines sequential rationality with belief consistency using Bayes' rule where possible."
+                }
+            ]
+        };
+
+        const levelThresholds = {
+            introductory: 2,
+            intermediate: 2,
+            advanced: 2
+        };
+
+        // Initialize Lucide icons
+        function initializeIcons() {
+            lucide.createIcons();
+        }
+
+        // Theme management
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            updateTheme();
+        }
+
+        function updateTheme() {
+            const body = document.getElementById('body');
+            const mainContainer = document.getElementById('main-container');
+            const resultsContainer = document.getElementById('results-container');
+            const mainTitle = document.getElementById('main-title');
+            const levelIndicator = document.getElementById('level-indicator');
+            const questionCounter = document.getElementById('question-counter');
+            const questionText = document.getElementById('question-text');
+            const progressBg = document.getElementById('progress-bg');
+            const feedbackSection = document.getElementById('feedback-section');
+            const feedbackText = document.getElementById('feedback-text');
+            const resultsTitle = document.getElementById('results-title');
+            const resultsDescription = document.getElementById('results-description');
+            const resultsStats = document.getElementById('results-stats');
+            
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeToggleResults = document.getElementById('theme-toggle-results');
+
+            if (darkMode) {
+                // Dark theme
+                body.className = 'min-h-screen transition-colors bg-gray-900';
+                mainContainer.className = 'rounded-lg shadow-lg transition-colors bg-gray-800';
+                resultsContainer.className = 'rounded-lg shadow-lg transition-colors bg-gray-800';
+                mainTitle.className = 'text-2xl font-bold text-white';
+                levelIndicator.className = 'text-sm text-gray-300';
+                questionCounter.className = 'text-sm mt-2 text-gray-400';
+                questionText.className = 'text-xl font-semibold mb-4 text-white';
+                progressBg.className = 'w-full rounded-full h-2 bg-gray-700';
+                feedbackSection.className = 'mb-6 p-4 rounded-lg border bg-blue-900 border-blue-700';
+                feedbackText.className = 'text-sm text-blue-300';
+                resultsTitle.className = 'text-2xl font-bold mb-2 text-white';
+                resultsDescription.className = 'mb-4 text-gray-300';
+                resultsStats.className = 'rounded-lg p-4 mb-6 bg-gray-700';
+                
+                themeToggle.className = 'p-2 rounded-lg transition-colors bg-gray-700 text-yellow-400 hover:bg-gray-600';
+                themeToggleResults.className = 'p-2 rounded-lg transition-colors bg-gray-700 text-yellow-400 hover:bg-gray-600';
+                themeToggle.innerHTML = '<i data-lucide="sun" class="w-5 h-5"></i>';
+                themeToggleResults.innerHTML = '<i data-lucide="sun" class="w-5 h-5"></i>';
+            } else {
+                // Light theme
+                body.className = 'min-h-screen transition-colors bg-gray-50';
+                mainContainer.className = 'rounded-lg shadow-lg transition-colors bg-white';
+                resultsContainer.className = 'rounded-lg shadow-lg transition-colors bg-white';
+                mainTitle.className = 'text-2xl font-bold text-gray-800';
+                levelIndicator.className = 'text-sm text-gray-600';
+                questionCounter.className = 'text-sm mt-2 text-gray-600';
+                questionText.className = 'text-xl font-semibold mb-4 text-gray-800';
+                progressBg.className = 'w-full rounded-full h-2 bg-gray-200';
+                feedbackSection.className = 'mb-6 p-4 rounded-lg border bg-blue-50 border-blue-200';
+                feedbackText.className = 'text-sm text-blue-800';
+                resultsTitle.className = 'text-2xl font-bold mb-2 text-gray-800';
+                resultsDescription.className = 'mb-4 text-gray-600';
+                resultsStats.className = 'rounded-lg p-4 mb-6 bg-gray-50';
+                
+                themeToggle.className = 'p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
+                themeToggleResults.className = 'p-2 rounded-lg transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
+                themeToggle.innerHTML = '<i data-lucide="moon" class="w-5 h-5"></i>';
+                themeToggleResults.innerHTML = '<i data-lucide="moon" class="w-5 h-5"></i>';
+            }
+            
+            // Update stats text colors in dark mode
+            const statsTexts = resultsStats.querySelectorAll('p');
+            statsTexts.forEach(p => {
+                p.className = darkMode ? 'text-sm text-gray-300' : 'text-sm text-gray-600';
+            });
+            
+            initializeIcons();
+        }
+
+        // Level color management
+        function getLevelColor(levelName) {
+            switch(levelName) {
+                case 'introductory': return 'text-green-600';
+                case 'intermediate': return 'text-yellow-600';
+                case 'advanced': return 'text-red-600';
+                default: return 'text-gray-600';
+            }
+        }
+
+        // Question management
+        function renderQuestion() {
+            const currentQuestions = questions[level];
+            const currentQ = currentQuestions[currentQuestion];
+            
+            document.getElementById('question-text').textContent = currentQ.question;
+            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1} of ${currentQuestions.length}`;
+            document.getElementById('current-level').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+            document.getElementById('current-level').className = `font-semibold ${getLevelColor(level)}`;
+            
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / currentQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            
+            // Render options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            currentQ.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = getOptionButtonClass(index, false, false);
+                button.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="option-icon mr-3" style="display: none;"></span>
+                        ${option}
+                    </div>
+                `;
+                button.addEventListener('click', () => handleAnswer(index));
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function getOptionButtonClass(index, isShowingFeedback, isSelected) {
+            const currentQuestions = questions[level];
+            const currentQ = currentQuestions[currentQuestion];
+            
+            if (isShowingFeedback) {
+                if (index === currentQ.correct) {
+                    return darkMode 
+                        ? 'w-full p-3 text-left rounded-lg border transition-colors bg-green-900 border-green-600 text-green-300'
+                        : 'w-full p-3 text-left rounded-lg border transition-colors bg-green-100 border-green-500 text-green-800';
+                } else if (isSelected) {
+                    return darkMode
+                        ? 'w-full p-3 text-left rounded-lg border transition-colors bg-red-900 border-red-600 text-red-300'
+                        : 'w-full p-3 text-left rounded-lg border transition-colors bg-red-100 border-red-500 text-red-800';
+                } else {
+                    return darkMode
+                        ? 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-700 border-gray-600 text-gray-400'
+                        : 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-50 border-gray-300 text-gray-600';
+                }
+            } else {
+                return darkMode
+                    ? 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600 hover:border-blue-500'
+                    : 'w-full p-3 text-left rounded-lg border transition-colors bg-gray-50 border-gray-300 hover:bg-blue-50 hover:border-blue-300';
+            }
+        }
+
+        function handleAnswer(answerIndex) {
+            if (showFeedback) return;
+            
+            const currentQuestions = questions[level];
+            const currentQ = currentQuestions[currentQuestion];
+            selectedAnswer = answerIndex;
+            const isCorrect = answerIndex === currentQ.correct;
+            
+            if (isCorrect) {
+                score++;
+            }
+            
+            // Update button styles and show feedback
+            const buttons = document.querySelectorAll('#options-container button');
+            buttons.forEach((button, index) => {
+                button.className = getOptionButtonClass(index, true, index === selectedAnswer);
+                button.disabled = true;
+                
+                // Add icons
+                const iconSpan = button.querySelector('.option-icon');
+                iconSpan.style.display = 'block';
+                if (index === currentQ.correct) {
+                    iconSpan.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>';
+                } else if (index === selectedAnswer) {
+                    iconSpan.innerHTML = '<i data-lucide="x-circle" class="w-5 h-5 text-red-600"></i>';
+                }
+            });
+            
+            // Show feedback
+            document.getElementById('feedback-text').textContent = currentQ.explanation;
+            document.getElementById('feedback-section').classList.remove('hidden');
+            document.getElementById('next-button-container').classList.remove('hidden');
+            
+            // Update next button text
+            const nextButton = document.getElementById('next-button');
+            nextButton.textContent = currentQuestion < currentQuestions.length - 1 ? 'Next Question' : 'Continue';
+            
+            showFeedback = true;
+            
+            // Record answer
+            answers.push({
+                questionId: currentQ.id,
+                selected: answerIndex,
+                correct: isCorrect,
+                level: level
+            });
+            
+            initializeIcons();
+        }
+
+        function handleNext() {
+            showFeedback = false;
+            selectedAnswer = null;
+            
+            // Hide feedback
+            document.getElementById('feedback-section').classList.add('hidden');
+            document.getElementById('next-button-container').classList.add('hidden');
+            
+            const currentQuestions = questions[level];
+            
+            if (currentQuestion < currentQuestions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                evaluateLevel();
+            }
+        }
+
+        function evaluateLevel() {
+            const levelScore = answers.filter(a => a.level === level && a.correct).length;
+            
+            if (level === 'introductory' && levelScore >= levelThresholds.introductory) {
+                level = 'intermediate';
+                currentQuestion = 0;
+                renderQuestion();
+            } else if (level === 'intermediate' && levelScore >= levelThresholds.intermediate) {
+                level = 'advanced';
+                currentQuestion = 0;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('main-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            const assessment = getFinalAssessment();
+            document.getElementById('results-icon').innerHTML = assessment.icon;
+            document.getElementById('results-title').textContent = assessment.title;
+            document.getElementById('results-description').textContent = assessment.description;
+            document.getElementById('final-level').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+            document.getElementById('final-level').className = `font-semibold ${getLevelColor(level)}`;
+            document.getElementById('total-questions').textContent = answers.length;
+            
+            updateTheme();
+        }
+
+        function getFinalAssessment() {
+            if (level === 'advanced') {
+                return {
+                    title: "Advanced Game Theorist",
+                    description: "Excellent mastery of game theory concepts from basic to advanced topics.",
+                    icon: '<i data-lucide="trophy" class="w-8 h-8 text-yellow-500"></i>'
+                };
+            } else if (level === 'intermediate') {
+                return {
+                    title: "Intermediate Understanding",
+                    description: "Good grasp of fundamental concepts. Ready to tackle more advanced topics.",
+                    icon: '<i data-lucide="target" class="w-8 h-8 text-blue-500"></i>'
+                };
+            } else {
+                return {
+                    title: "Foundational Knowledge",
+                    description: "Basic understanding established. Focus on strengthening core concepts.",
+                    icon: '<i data-lucide="brain" class="w-8 h-8 text-green-500"></i>'
+                };
+            }
+        }
+
+        function resetAssessment() {
+            currentQuestion = 0;
+            score = 0;
+            level = 'introductory';
+            answers = [];
+            showResult = false;
+            assessmentComplete = false;
+            selectedAnswer = null;
+            showFeedback = false;
+            
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('main-container').classList.remove('hidden');
+            
+            renderQuestion();
+            updateTheme();
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeIcons();
+            renderQuestion();
+            
+            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+            document.getElementById('theme-toggle-results').addEventListener('click', toggleDarkMode);
+            document.getElementById('next-button').addEventListener('click', handleNext);
+            document.getElementById('restart-button').addEventListener('click', resetAssessment);
+        });
+    </script>
+</body>
+</html>
