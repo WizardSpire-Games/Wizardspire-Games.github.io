@@ -6,9 +6,9 @@
 <p id="demo"></p>
 
 <script>
-const myJSON = '["wizardspire.com", "BMW", "Fiat"]';
+const myJSON = '["\<a href\=\"wizardspire.com\"\>wizardspire\<\/a\>", "BMW", "Fiat"]';
 const myArray = JSON.parse(myJSON);
-document.getElementById("demo").innerHTML = "<a href="+myArray[0]+">test</a>";
+document.getElementById("demo").innerHTML = myArray[0];
 </script>
 
 </body>
