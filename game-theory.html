@@ -6,34 +6,8 @@
     <title>Game Theory Assessment</title>
     <link rel="stylesheet" href="./css/ws.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .dark {
-            color-scheme: dark;
-        }
-        .transition-colors {
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-        }
-        .transition-all {
-            transition: all 0.3s ease;
-        }
-        .lucide-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            stroke: currentColor;
-            stroke-width: 2;
-            fill: none;
-        }
-        .lucide-icon-lg {
-            width: 2rem;
-            height: 2rem;
-        }
-    </style>
 </head>
 <body class="min-h-screen transition-colors bg-gray-50" id="app-body">
-    <img src="./images/wslogo.png" />
-    <h1>WizardSpire Games</h1>
-    <h6><a href="./index.html">Home</a> <a href="./game-theory.html">Game Theory</a> <a href="./journal.html">Journal</a> <a href="./about.html">About</a><a href="./CCARPS-Core-Ruleset-rc3.html">CCARPS</a>
-
     <div class="max-w-2xl mx-auto p-6">
         <div class="rounded-lg shadow-lg transition-colors bg-white" id="main-container">
             <div class="p-6">
@@ -560,5 +534,19 @@
         renderQuestion();
         updateTheme();
     </script>
+    </h6>
+</div>
+    <div id="hedder">
+        <img class="ws-center" src="./images/wslogo.png" />
+        <h1>WizardSpire Games</h1>
+    </div>
+    <div id="menu">   
+        <h6>
+            <a href="./index.html">Home</a><br>
+            <a href="./game-theory.html">Game Theory</a><br>
+            <a href="./journal.html">Journal</a><br><a href="./about.html">About</a><br>
+            <a href="./CCARPS-Core-Ruleset-rc3.html">CCARPS</a>
+        </h6>
+    </div>
 </body>
 </html>
