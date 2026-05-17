@@ -1,1 +1,8 @@
 <!-- WizardSpire Games - CCARPS RPG system -->
+async function loadContent() {
+    const response = await fetch('content.html'); // Fetch the file
+    const text = await response.text();           // Convert response to text
+    document.getElementById('myDiv').innerHTML = text; // Inject into div
+}
+
+loadContent();
