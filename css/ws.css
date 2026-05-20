@@ -1,3 +1,26 @@
+.ws-menu {
+  background-color: #f0f0f0;
+  width: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.book-hedder {
+  background-color: #ffffff;
+  width: auto;
+  padding: 10px;
+  left: 0px;
+  top: 0px;
+  position: fixed;
+}
+.book-menu {
+  background-color: #f0f0f0;
+  width: 255px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  left: 0px;
+  top: 300px;
+  position: fixed;
+}
 li {
   font-family: "Lucida Console", "Courier New", monospace;
 }
@@ -10,6 +33,15 @@ li {
   width: 50%;
   border: 3px solid green;
   padding: 10px;
+}
+.book-right{
+  float: right;
+}
+.book-left{
+  float: left;
+}
+.book-center{
+  text-align: center;
 }
 .ws-center{
   text-align: center;
@@ -33,4 +65,7 @@ li {
 .lucide-icon-lg {
   width: 2rem;
   height: 2rem;
+}
+table {
+  width: 100%;
 }
